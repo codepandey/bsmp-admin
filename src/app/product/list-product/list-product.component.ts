@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { clone } from "lodash";
 import Swal from "sweetalert2";
 import { first } from "rxjs/operators";
+import { async } from "rxjs/internal/scheduler/async";
 
 @Component({
   selector: "app-list-product",
@@ -16,6 +17,7 @@ import { first } from "rxjs/operators";
 })
 export class ListProductComponent implements OnInit {
   @ViewChild("closebutton", { static: false }) closebutton: any;
+  @ViewChild("closebuttonAddProduct", { static: false }) closebuttonAddProduct: any;
   public popoverTitle = "Are You Sure to Delete??";
   public popoverMessage = `<strong>This will delete parmanently</strong>`;
   public confirmClicked = false;
@@ -38,6 +40,7 @@ export class ListProductComponent implements OnInit {
   editedProduct: any = {};
   data;
   selectedUnit: any;
+  selectedPromoCode: any;
 
   unit = [
     { id: 1, unitName: "L" },
@@ -45,11 +48,11 @@ export class ListProductComponent implements OnInit {
   ];
 
   promoCodes = [
-    { id: 1, promoCodes: "MY TWENTY", value: 20 },
-    { id: 2, promoCodes: "SMILE THIRTY", value: 30 },
-    { id: 3, promoCodes: "HAPPY FOURTY", value: 40 },
-    { id: 4, promoCodes: "EXCITING FIFTY", value: 50 },
-    { id: 5, promoCodes: "NONE", value: 0 },
+    { id: 0, promoCode: "MY TWENTY", value: 20 },
+    { id: 1, promoCode: "SMILE THIRTY", value: 30 },
+    { id: 2, promoCode: "HAPPY FOURTY", value: 40 },
+    { id: 3, promoCode: "EXCITING FIFTY", value: 50 },
+    { id: 4, promoCode: "NONE", value: 0 },
   ];
 
   category = [
@@ -97,7 +100,7 @@ initializeAddProductForm() {
     promoCodes: "",
     image: "",
     category: "",
-    subscribable: Boolean,
+    isSubscribable: Boolean,
     description: ""
   });
 }
@@ -116,24 +119,33 @@ initializeAddProductForm() {
 
 
   addNewProduct(product) {
-    console.log('product ', product);
-    product.subscribable === "true" ? true : false;
-
-
     this.bsProectService.addProduct(product)
     .subscribe((response) => {
       console.log('response ', response);      
-    })
+    });
+    this.closebuttonAddProduct.nativeElement.click();  
     
-    
+  }
+
+  
+
+
+  filterPromoCodeIndex() {
+    const avengers = this.promoCodes.filter(code => code.promoCode === 'Avengers');
   }
 
 
 
-  viewProduct(product) {
-    this.selectedUnit = product.unit;
 
+  viewProduct(product) {    
+    let pCode = this.promoCodes.filter(code => code.promoCode === product['promoCodes']);
+    console.log('pCode ', pCode);
+    
+    this.selectedPromoCode = this.promoCodes[pCode[0]['id']];
+    console.log('selectedPromoCode ', this.selectedPromoCode);    
+    this.selectedUnit = this.unit[product.unit== "L" ? 0 : 1];    
     console.log("selectedUnit ", this.selectedUnit);
+
 
     if (!product) {
       this.productForm = false;
@@ -172,12 +184,10 @@ initializeAddProductForm() {
   }
 
   deleteProduct(product) {
-    console.log("product ", product);
     Swal.fire({
       title: "Are you sure?",
       text: "You will not be able to recover this item",
       icon: "warning",
-
       showCancelButton: true,
       cancelButtonColor: "#3085d6",
       confirmButtonColor: "#d33",
@@ -185,21 +195,15 @@ initializeAddProductForm() {
       cancelButtonText: "No, keep it",
     }).then((result) => {
       if (result.value) {
-        console.log("YESSSSSSSS");
-
-        // this.bsProectService.deleteProduct(product.id).subscribe((data) => {
-        //   console.log('DATAAA ',  data);
-
-        //   this.getAllItems();
-        // });
+        this.bsProectService.deleteProduct(product.id).subscribe(async(data) => {
+         await this.getAllItems();
+        });
         Swal.fire(
           "Deleted!",
           `<strong style="color:red;">Your selected Item has been deleted.</strong>`,
           "success"
         );
       } else if (result.dismiss === Swal.DismissReason.cancel) {
-        console.log("NOOOOOOOOOOOOO");
-
         Swal.fire("Cancelled", "Your item is safe :)", "error");
       }
     });

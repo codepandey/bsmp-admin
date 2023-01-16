@@ -113,14 +113,20 @@
                       class="form-control"
                       formControlName="unit"
                       id="unit"  
-                      [(ngModel)]="selectedUnit"                      
+                      [(ngModel)]="selectedUnit"  
                     >
-                      <option *ngFor="let u of unit" [value]="u.unit">
-                        {{ u.unitName }}
-                      </option>
+                    
+                    <option *ngFor="let level of unit" [ngValue]="level">{{level.unitName}}</option>
+                       
                     </select>
                    
                   </div>
+
+                  <!-- <select formControlName="unit" [(ngModel)]="selectedUnit">
+                    <option *ngFor="let level of unit" [ngValue]="level">{{level.unitName}}</option>
+                  </select> -->
+
+
                 </div>
 
                 <div class="form-group row">
@@ -198,17 +204,36 @@
                   <label for="promoCodes" class="col-sm-3 col-form-label"
                     >PromoCode
                   </label>
+                  <!-- <div class="col-sm-9">
+                    <select
+                      class="form-control"
+                      formControlName="promoCodes"
+                      id="promoCodes" 
+                      [(ngModel)]="selectedPromoCode"                      
+                    >
+                     
+
+                    <option *ngFor="let level of promoCodes" [ngValue]="level">{{level.promoCodes}}</option>
+
+
+                    </select>                   
+                  </div> -->
+
+
+
                   <div class="col-sm-9">
                     <select
                       class="form-control"
                       formControlName="promoCodes"
-                      id="promoCodes"                       
-                    >
-                      <option *ngFor="let p of promoCodes" [value]="p.promoCodes">
-                        {{ p.promoCodes }}
-                      </option>
-                    </select>                   
+                      id="promoCodes"  
+                      [(ngModel)]="selectedPromoCode"  
+                    >                    
+                    <option *ngFor="let promo of promoCodes" [ngValue]="promo">{{promo.promoCode}}</option>
+                    </select>
+                   
                   </div>
+
+
                 </div>
 
                 <div class="form-group row">
@@ -461,9 +486,9 @@
                         <div class="col-sm-9">
                           <select
                             class="form-control"
-                            formControlName="subscribable"
+                            formControlName="isSubscribable"
                             id="subscribable"
-                            [(ngModel)]="addProduct.subscribable"                       
+                            [(ngModel)]="addProduct.isSubscribable"                       
                           >
                             <option *ngFor="let sub of subscribable" [value]="sub.state">
                               {{ sub.value }}
@@ -500,7 +525,7 @@
               </div>     
             </div>      
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal"  #closebutton>Close</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal"  #closebuttonAddProduct>Close</button>
               <button type="button" class="btn btn-primary" (click)="addNewProduct(addProduct)">Add</button>
             </div>
                

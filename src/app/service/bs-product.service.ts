@@ -34,7 +34,7 @@ export class BSProductService {
   addProduct(product: any) {
     console.log('product', product);
     
-    return this.http.post(this.itemUrl + 'api/bs-products', product);
+    return this.http.post(this.itemUrl + 'api/bs-products/', product);
   }
 
   updateProduct(product: any) {
