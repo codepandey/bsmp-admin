@@ -40,29 +40,35 @@ export class ListProductComponent implements OnInit {
   editedProduct: any = {};
   data;
   selectedUnit: any;
+  selectedUnitObj: any = {};
+  selectedPromoCodeObj: any = {};
+  selectedCategoryObj: any = {};
+  selectedisSubscribableObj: any = {};
   selectedPromoCode: any;
+  isSubscribable: any;
+  selectedCategory: any;
 
   unit = [
-    { id: 1, unitName: "L" },
-    { id: 2, unitName: "Kg" },
+    { id: 0, unitName: "L" },
+    { id: 1, unitName: "KG" },
   ];
 
-  promoCodes = [
-    { id: 0, promoCode: "MY TWENTY", value: 20 },
-    { id: 1, promoCode: "SMILE THIRTY", value: 30 },
-    { id: 2, promoCode: "HAPPY FOURTY", value: 40 },
-    { id: 3, promoCode: "EXCITING FIFTY", value: 50 },
-    { id: 4, promoCode: "NONE", value: 0 },
+  promoList = [
+    { id: 0, promoName: "MY TWENTY", value: 20 },
+    { id: 1, promoName: "SMILE THIRTY", value: 30 },
+    { id: 2, promoName: "HAPPY FOURTY", value: 40 },
+    { id: 3, promoName: "EXCITING FIFTY", value: 50 },
+    { id: 4, promoName: "NONE", value: 0 },
   ];
 
-  category = [
-    { id: 1, categoryName: "Sweets" },
-    { id: 2, categoryName: "Vegetables" },
-    { id: 3, categoryName: "Dairy Product" },
+  categoryList = [
+    { id: 0, categoryName: "Sweets" },
+    { id: 1, categoryName: "Vegetables" },
+    { id: 2, categoryName: "Dairy Products" },
   ];
   subscribable = [
-    { id: 1, value: 'Yes', state: true },
-    { id: 2,  value: 'No', state: false},
+    { id: 0, value: 'Yes', state: true },
+    { id: 1,  value: 'No', state: false},
   ];
 
   constructor(
@@ -74,20 +80,26 @@ export class ListProductComponent implements OnInit {
   ngOnInit() {
     this.getAllItems();
     this.initializeAddProductForm();
+    this.initializeEditProductForm();
 
+  
+  }
+
+  initializeEditProductForm() {
     this.editForm = this.formBuilder.group({
       title: "",
       unit: "",
       stockLeft: "",
       price: "",
       discount: "",
-      promoCodes: "",
+      promoCode: "",
       image: "",
       category: "",
       subscribable: "",
       description: ""
     });
   }
+
 
 
 initializeAddProductForm() {
@@ -130,21 +142,30 @@ initializeAddProductForm() {
   
 
 
-  filterPromoCodeIndex() {
-    const avengers = this.promoCodes.filter(code => code.promoCode === 'Avengers');
-  }
+  
 
 
 
 
-  viewProduct(product) {    
-    let pCode = this.promoCodes.filter(code => code.promoCode === product['promoCodes']);
-    console.log('pCode ', pCode);
+  viewProduct(product: any) { 
+
+    // promocode
+    this.selectedPromoCode = this.promoList.filter((ele) => ele.promoName === product['promoCodes']); 
+    this.selectedPromoCodeObj = this.selectedPromoCode[0];
     
-    this.selectedPromoCode = this.promoCodes[pCode[0]['id']];
-    console.log('selectedPromoCode ', this.selectedPromoCode);    
-    this.selectedUnit = this.unit[product.unit== "L" ? 0 : 1];    
-    console.log("selectedUnit ", this.selectedUnit);
+    // unit
+    this.selectedUnit = this.unit.filter((ele) => ele.unitName === product['unit']); 
+    this.selectedUnitObj = this.selectedUnit[0];
+
+    // subscribable
+    this.isSubscribable = this.subscribable.filter((ele) => ele.state == product['subscribable']);   
+    this.selectedisSubscribableObj = this.isSubscribable[0]; 
+
+    // category
+    this.selectedCategory = this.categoryList.filter((ele) => ele.categoryName == product['category']);   
+    this.selectedCategoryObj = this.selectedCategory[0];
+   
+    
 
 
     if (!product) {
@@ -152,9 +173,11 @@ initializeAddProductForm() {
       return;
     }
     this.editedProduct = clone(product);
+    
   }
 
-  updateProduct(product: any) {
+  updateProduct(product: any) {    
+    
     this.bsProectService.updateProduct(product).subscribe((data) => {
       Swal.fire({
         position: "center",
@@ -168,6 +191,8 @@ initializeAddProductForm() {
       this.getAllItems();
     });
   }
+
+ 
 
   Search() {
     if (this.name !== "") {
@@ -208,4 +233,9 @@ initializeAddProductForm() {
       }
     });
   }
+
+
+
+
+ 
 }
