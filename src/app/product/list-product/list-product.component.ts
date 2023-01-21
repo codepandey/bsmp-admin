@@ -18,6 +18,7 @@ import { async } from "rxjs/internal/scheduler/async";
 export class ListProductComponent implements OnInit {
   @ViewChild("closebutton", { static: false }) closebutton: any;
   @ViewChild("closebuttonAddProduct", { static: false }) closebuttonAddProduct: any;
+  @ViewChild("closebuttontwo", { static: false }) closebuttontwo: any;
   public popoverTitle = "Are You Sure to Delete??";
   public popoverMessage = `<strong>This will delete parmanently</strong>`;
   public confirmClicked = false;
@@ -45,15 +46,16 @@ export class ListProductComponent implements OnInit {
   selectedCategoryObj: any = {};
   selectedisSubscribableObj: any = {};
   selectedPromoCode: any;
-  isSubscribable: any;
+  isSubscribableArr: any;
   selectedCategory: any;
+  isEdit: boolean = false
 
   unit = [
     { id: 0, unitName: "L" },
     { id: 1, unitName: "KG" },
   ];
 
-  promoList = [
+  promoCodes = [
     { id: 0, promoName: "MY TWENTY", value: 20 },
     { id: 1, promoName: "SMILE THIRTY", value: 30 },
     { id: 2, promoName: "HAPPY FOURTY", value: 40 },
@@ -61,14 +63,14 @@ export class ListProductComponent implements OnInit {
     { id: 4, promoName: "NONE", value: 0 },
   ];
 
-  categoryList = [
+  category = [
     { id: 0, categoryName: "Sweets" },
     { id: 1, categoryName: "Vegetables" },
     { id: 2, categoryName: "Dairy Products" },
   ];
   subscribable = [
-    { id: 0, value: 'Yes', state: true },
-    { id: 1,  value: 'No', state: false},
+    { id: 0, sub: 'Yes', state: true },
+    { id: 1,  sub: 'No', state: false},
   ];
 
   constructor(
@@ -80,9 +82,7 @@ export class ListProductComponent implements OnInit {
   ngOnInit() {
     this.getAllItems();
     this.initializeAddProductForm();
-    this.initializeEditProductForm();
-
-  
+    this.initializeEditProductForm();  
   }
 
   initializeEditProductForm() {
@@ -100,22 +100,28 @@ export class ListProductComponent implements OnInit {
     });
   }
 
+  cancel() {
+  console.log('cancel');  
+  // window.location.reload();
+    // this.closebuttontwo.nativeElement.click();  
+  }
 
 
-initializeAddProductForm() {
-  this.addForm = this.formBuilder.group({
-    title: "",
-    unit: "",
-    stockLeft: "",
-    price: "",
-    discount: "",
-    promoCodes: "",
-    image: "",
-    category: "",
-    isSubscribable: Boolean,
-    description: ""
-  });
-}
+
+  initializeAddProductForm() {
+    this.addForm = this.formBuilder.group({
+      title: ["", Validators.required],
+      unit: ["", Validators.required],
+      stockLeft: ["", Validators.required],
+      price: ["", Validators.required],
+      discount: ["", Validators.required],
+      promoCodes: ["", Validators.required],
+      image: ["", Validators.required],
+      category: ["", Validators.required],
+      subscribable: ["", Validators.required],
+      description: ["", Validators.required]
+    });
+  }
 
 
 
@@ -124,18 +130,37 @@ initializeAddProductForm() {
     this.products = data;
   }
 
-  addItem(): void {
-    this.router.navigate(["product/add-product"]);
-  }
+  // addItem(): void {
+  //   this.router.navigate(["product/add-product"]);
+  // }
+
+  get f() { return this.addForm.controls; }
 
 
 
   addNewProduct(product) {
-    this.bsProectService.addProduct(product)
-    .subscribe((response) => {
-      console.log('response ', response);      
-    });
-    this.closebuttonAddProduct.nativeElement.click();  
+    console.log(product);
+    console.log(this.addForm.valid);
+    
+    // this.initializeAddProductForm();
+    if (!this.addForm.valid) {
+      return;
+  }
+
+    
+    // this.bsProectService.addProduct(product)
+    // .subscribe(async(response) => {
+    //   Swal.fire({
+    //     position: "center",
+    //     icon: "success",
+    //     title: "Product Added",
+    //     showConfirmButton: true,
+    //     timer: 3000,
+    //     timerProgressBar: true,
+    //   });    
+    //   await this.getAllItems();
+    // });
+    // this.closebuttonAddProduct.nativeElement.click();  
     
   }
 
@@ -148,9 +173,10 @@ initializeAddProductForm() {
 
 
   viewProduct(product: any) { 
-
+    this.isEdit = true;
+    this.initializeEditProductForm();  
     // promocode
-    this.selectedPromoCode = this.promoList.filter((ele) => ele.promoName === product['promoCodes']); 
+    this.selectedPromoCode = this.promoCodes.filter((ele) => ele.promoName === product['promoCodes']); 
     this.selectedPromoCodeObj = this.selectedPromoCode[0];
     
     // unit
@@ -158,38 +184,51 @@ initializeAddProductForm() {
     this.selectedUnitObj = this.selectedUnit[0];
 
     // subscribable
-    this.isSubscribable = this.subscribable.filter((ele) => ele.state == product['subscribable']);   
-    this.selectedisSubscribableObj = this.isSubscribable[0]; 
+    this.isSubscribableArr = this.subscribable.filter((ele) => ele.state == product['subscribable']);   
+    this.selectedisSubscribableObj = this.isSubscribableArr[0]; 
 
     // category
-    this.selectedCategory = this.categoryList.filter((ele) => ele.categoryName == product['category']);   
+    this.selectedCategory = this.category.filter((ele) => ele.categoryName == product['category']);   
     this.selectedCategoryObj = this.selectedCategory[0];
    
     
 
 
-    if (!product) {
-      this.productForm = false;
-      return;
-    }
+    // if (!product) {
+    //   this.productForm = false;
+    //   return;
+    // }
     this.editedProduct = clone(product);
     
   }
 
   updateProduct(product: any) {    
+    // console.log(product);
     
-    this.bsProectService.updateProduct(product).subscribe((data) => {
+    let unit = product['unit']['unitName'];
+    let category = product['category']['categoryName'];
+    let promo = product['promoCodes']['promoName'];
+    let isSubscribable = product['subscribable']['state'];
+    product['unit'] = unit;
+    product['category'] = category;
+    product['promoCodes'] = promo;
+    product['subscribable'] = isSubscribable;  
+    
+    
+    this.bsProectService.updateProduct(product).subscribe(async(data) => {
       Swal.fire({
         position: "center",
         icon: "success",
-        title: "Item updated",
+        title: "Product updated",
         showConfirmButton: true,
         timer: 3000,
         timerProgressBar: true,
       });
       this.closebutton.nativeElement.click();
-      this.getAllItems();
+     await this.getAllItems();
+    //  window.location.reload();
     });
+    
   }
 
  
@@ -225,7 +264,7 @@ initializeAddProductForm() {
         });
         Swal.fire(
           "Deleted!",
-          `<strong style="color:red;">Your selected Item has been deleted.</strong>`,
+          `<strong style="color:red;">Your selected Product has been deleted.</strong>`,
           "success"
         );
       } else if (result.dismiss === Swal.DismissReason.cancel) {

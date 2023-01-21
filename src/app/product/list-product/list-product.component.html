@@ -71,7 +71,7 @@
 
 <!-- Modal -->
 <!-- Edit Product -->
-
+<div *ngIf="isEdit">
   <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -115,6 +115,7 @@
                         formControlName="unit"
                         id="unit"  
                         [(ngModel)]="selectedUnitObj"  
+                        [(ngModel)]="editedProduct.unit"  
                       >
                       
                       <option *ngFor="let level of unit" [ngValue]="level">{{level.unitName}}</option>
@@ -208,9 +209,10 @@
                         class="form-control"
                         formControlName="promoCode"
                         id="promoCodes"  
-                        [(ngModel)]="selectedPromoCodeObj"  
+                        [(ngModel)]="selectedPromoCodeObj"
+                        [(ngModel)]="editedProduct.promoCodes"  
                       >                    
-                      <option *ngFor="let promo of promoList" [ngValue]="promo">
+                      <option *ngFor="let promo of promoCodes" [ngValue]="promo">
                         {{promo.promoName}}
                       </option>
                       </select>                     
@@ -236,9 +238,10 @@
                         class="form-control"
                         formControlName="category"
                         id="category"  
-                        [(ngModel)] = "selectedCategoryObj"                     
+                        [(ngModel)] = "selectedCategoryObj"
+                        [(ngModel)]="editedProduct.category" 
                       >
-                        <option *ngFor="let cat of categoryList" [ngValue]="cat">
+                        <option *ngFor="let cat of category" [ngValue]="cat">
                           {{ cat.categoryName }}
                         </option>
                       </select>
@@ -256,10 +259,11 @@
                         class="form-control"
                         formControlName="subscribable"
                         id="subscribable"
-                        [(ngModel)]="selectedisSubscribableObj"                       
+                        [(ngModel)]="selectedisSubscribableObj"
+                        [(ngModel)]="editedProduct.subscribable" 
                       >
-                        <option *ngFor="let sub of subscribable" [ngValue]="sub">
-                          {{ sub.value }}
+                        <option *ngFor="let s of subscribable" [ngValue]="s">
+                          {{ s.sub }}
                         </option>
                       </select>
                      
@@ -296,12 +300,13 @@
           </div>     
         </div>      
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"  #closebutton>Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"  #closebuttontwo (click)="cancel()">Close</button>
           <button type="button" class="btn btn-primary" (click)="updateProduct(editedProduct)">Update</button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
 
 
@@ -310,230 +315,238 @@
 
 
 <!-- Add Product -->
- <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addProductModal">Add Product</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="modal-body">
-              <div class="container">
-              <div class="row">
-                <div class="col-lg-12">
-                  <form  [formGroup]="addForm">              
-                    <div class="col-lg-12">
-      
-                      <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Title</label>
-                        <div class="col-sm-9">
-                          <input
-                            name="title"
-                            [(ngModel)]="addProduct.title"
-                            formControlName="title"
-                            type="text"
-                            placeholder="Enter item name"
-                            class="form-control"
-                            id="title"
-                          
-                          
-                          />                     
-                        </div>
-                      </div>
-      
-                      <div class="form-group row">
-                        <label for="unit" class="col-sm-3 col-form-label"
-                          >Unit
-                        </label>
-                        <div class="col-sm-9">
-                          <select
-                            class="form-control"
-                            formControlName="unit"
-                            id="unit"
-                            [(ngModel)]="addProduct.unit"  
 
-                          >
-                            <option *ngFor="let value of unit" [value]="value.unitName">
-                              {{ value.unitName }}
-                            </option>
-                          </select>
+
+  <div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModal" aria-hidden="true">
+   <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="addProductModal">Add Product</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <div class="row">
+           <div class="col-lg-12">
+             <div class="modal-body">
+               <div class="container">
+               <div class="row">
+                 <div class="col-lg-12">
+                   <form  [formGroup]="addForm">              
+                     <div class="col-lg-12">
+       
+                       <div class="form-group row">
+                         <label for="name" class="col-sm-3 col-form-label">Title</label>
+                         <div class="col-sm-9">
+                           <input
+                             name="title"
+                             [(ngModel)]="addProduct.title"
+                             formControlName="title"
+                             type="text"
+                             placeholder="Enter item name"
+                             class="form-control"
+                             id="title"
+                             [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
+                           
+                           
+                           />    
+                           
+                           <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                             <div *ngIf="f.title.errors.required">Title is required</div>
+                         </div>
+                         </div>
+                       </div>
+       
+                       <div class="form-group row">
+                         <label for="unit" class="col-sm-3 col-form-label"
+                           >Unit
+                         </label>
+                         <div class="col-sm-9">
+                           <select
+                             class="form-control"
+                             formControlName="unit"
+                             id="unit"
+                             [(ngModel)]="addProduct.unit"  
+ 
+                           >
+                             <option *ngFor="let value of unit" [value]="value.unitName">
+                               {{ value.unitName }}
+                             </option>
+                           </select>
+                          
+                         </div>
+                       </div>
+       
+                       <div class="form-group row">
+                         <label for="name" class="col-sm-3 col-form-label">Price</label>
+                         <div class="col-sm-9">
+                           <input
+                             name="price"
+                             [(ngModel)]="addProduct.price"
+                             type="number"
+                             formControlName="price"
+                             placeholder="Enter item name"
+                             class="form-control"
+                             id="price"
+                           />
                          
-                        </div>
-                      </div>
-      
-                      <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Price</label>
-                        <div class="col-sm-9">
-                          <input
-                            name="price"
-                            [(ngModel)]="addProduct.price"
-                            type="number"
-                            formControlName="price"
-                            placeholder="Enter item name"
-                            class="form-control"
-                            id="price"
-                          />
-                        
-                        </div>
-                      </div>
-      
-                      <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Stock Left</label>
-                        <div class="col-sm-9">
-                          <input
-                            name="stockLeft"
-                            [(ngModel)]="addProduct.stockLeft"
-                            type="number"
-                            formControlName="stockLeft"
-                            placeholder="Enter item name"
-                            class="form-control"
-                            id="stockLeft"
+                         </div>
+                       </div>
+       
+                       <div class="form-group row">
+                         <label for="name" class="col-sm-3 col-form-label">Stock Left</label>
+                         <div class="col-sm-9">
+                           <input
+                             name="stockLeft"
+                             [(ngModel)]="addProduct.stockLeft"
+                             type="number"
+                             formControlName="stockLeft"
+                             placeholder="Enter item name"
+                             class="form-control"
+                             id="stockLeft"
+                           
+                           
+                           />                     
+                         </div>
+                       </div>
+       
+       
+                       <div class="form-group row">
+                         <label for="discount" class="col-sm-3 col-form-label">Discount Percent</label>
+                         <div class="col-sm-9">
+                           <input
+                             name="stockLeft"
+                             [(ngModel)]="addProduct.discount"
+                             type="number"
+                             formControlName="discount"
+                             placeholder="Enter Discount Percent"
+                             class="form-control"
+                             id="discount"                   
+                           
+                           />     
+                                           
+                         </div>
+                       </div>
+       
+       
+                       <div class="form-group row">
+                         <label for="name" class="col-sm-3 col-form-label">Image URL</label>
+                         <div class="col-sm-9">
+                           <input
+                             name="image"
+                             [(ngModel)]="addProduct.image"
+                             formControlName="promoCodes"
+                             type="text"
+                             placeholder="Enter Image URL"
+                             class="form-control"
+                             id="image"                
+                           
+                           />                     
+                         </div>
+                       </div>
+       
+       
+       
+       
+                       <div class="form-group row">
+                         <label for="promoCodes" class="col-sm-3 col-form-label"
+                           >PromoCode
+                         </label>
+                         <div class="col-sm-9">
+                           <select
+                             class="form-control"
+                             formControlName="promoCodes"
+                             id="promoCodes"
+                             [(ngModel)]="addProduct.promoCodes"                       
+                           >
+                             <option *ngFor="let p of promoCodes" [value]="p.promoName">
+                               {{ p.promoName }}
+                             </option>
+                           </select>                   
+                         </div>
+                       </div>
+       
+                       <div class="form-group row">
+                         <label for="category" class="col-sm-3 col-form-label"
+                           >Category
+                         </label>
+                         <div class="col-sm-9">
+                           <select
+                             class="form-control"
+                             formControlName="category"
+                             id="category"
+                             [(ngModel)]="addProduct.category"                         
+                           >
+                             <option *ngFor="let c of category" [value]="c.categoryName">
+                               {{ c.categoryName }}
+                             </option>
+                           </select>
                           
+                         </div>
+                       </div>
+       
+       
+                       <div class="form-group row">
+                         <label for="subscribable" class="col-sm-3 col-form-label"
+                           >Subscribable
+                         </label>
+                         <div class="col-sm-9">
+                           <select
+                             class="form-control"
+                             formControlName="subscribable"
+                             id="subscribable"
+                             [(ngModel)]="addProduct.subscribable"                       
+                           >
+                             <option *ngFor="let s of subscribable" [value]="s.state">
+                               {{ s.sub }}
+                             </option>
+                           </select>
                           
-                          />                     
-                        </div>
-                      </div>
-      
-      
-                      <div class="form-group row">
-                        <label for="discount" class="col-sm-3 col-form-label">Discount Percent</label>
-                        <div class="col-sm-9">
-                          <input
-                            name="stockLeft"
-                            [(ngModel)]="addProduct.discount"
-                            type="number"
-                            formControlName="discount"
-                            placeholder="Enter Discount Percent"
-                            class="form-control"
-                            id="discount"                   
-                          
-                          />     
-                                          
-                        </div>
-                      </div>
-      
-      
-                      <div class="form-group row">
-                        <label for="name" class="col-sm-3 col-form-label">Image URL</label>
-                        <div class="col-sm-9">
-                          <input
-                            name="image"
-                            [(ngModel)]="addProduct.image"
-                            formControlName="promoCodes"
-                            type="text"
-                            placeholder="Enter Image URL"
-                            class="form-control"
-                            id="image"                
-                          
-                          />                     
-                        </div>
-                      </div>
-      
-      
-      
-      
-                      <div class="form-group row">
-                        <label for="promoCodes" class="col-sm-3 col-form-label"
-                          >PromoCode
-                        </label>
-                        <div class="col-sm-9">
-                          <select
-                            class="form-control"
-                            formControlName="promoCodes"
-                            id="promoCodes"
-                            [(ngModel)]="addProduct.promoCodes"                       
-                          >
-                            <option *ngFor="let p of promoCodes" [value]="p.promoCodes">
-                              {{ p.promoCodes }}
-                            </option>
-                          </select>                   
-                        </div>
-                      </div>
-      
-                      <div class="form-group row">
-                        <label for="category" class="col-sm-3 col-form-label"
-                          >Category
-                        </label>
-                        <div class="col-sm-9">
-                          <select
-                            class="form-control"
-                            formControlName="category"
-                            id="category"
-                            [(ngModel)]="addProduct.category"                         
-                          >
-                            <option *ngFor="let c of categoryList" [value]="c.categoryName">
-                              {{ c.categoryName }}
-                            </option>
-                          </select>
-                         
-                        </div>
-                      </div>
-      
-      
-                      <div class="form-group row">
-                        <label for="subscribable" class="col-sm-3 col-form-label"
-                          >Subscribable
-                        </label>
-                        <div class="col-sm-9">
-                          <select
-                            class="form-control"
-                            formControlName="isSubscribable"
-                            id="subscribable"
-                            [(ngModel)]="addProduct.isSubscribable"                       
-                          >
-                            <option *ngFor="let sub of subscribable" [value]="sub.state">
-                              {{ sub.value }}
-                            </option>
-                          </select>
-                         
-                        </div>
-                      </div>
-      
-      
-                      <div class="form-group row">
-                        <label for="description" class="col-sm-3 col-form-label">Description</label>
-                        <div class="col-sm-9">
-                          <input
-                            name="description"
-                            [(ngModel)]="addProduct.description"
-                            formControlName="title"
-                            type="text"
-                            placeholder="Enter Description"
-                            class="form-control"
-                            id="description"                        
-                          
-                          />                     
-                        </div>
-                      </div>
-      
-      
-      
-      
-                    </div>
-                  </form>             
-                </div>
-              </div>   
-              </div>     
-            </div>      
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal"  #closebuttonAddProduct>Close</button>
-              <button type="button" class="btn btn-primary" (click)="addNewProduct(addProduct)">Add</button>
-            </div>
-               
+                         </div>
+                       </div>
+       
+       
+                       <div class="form-group row">
+                         <label for="description" class="col-sm-3 col-form-label">Description</label>
+                         <div class="col-sm-9">
+                           <input
+                             name="description"
+                             [(ngModel)]="addProduct.description"
+                             formControlName="title"
+                             type="text"
+                             placeholder="Enter Description"
+                             class="form-control"
+                             id="description"                        
+                           
+                           />                     
+                         </div>
+                       </div>
+       
+       
+       
+       
+                     </div>
+                     <div class="modal-footer">
+                       <button type="button" class="btn btn-secondary" data-dismiss="modal"  #closebuttonAddProduct>Close</button>
+                       <button type="submit" class="btn btn-primary" (click)="addNewProduct(addProduct)">Add</button>
+                     </div>
+                   </form>             
+                 </div>
+               </div>   
+               </div>     
+             </div>      
+                
+ 
+ 
+ 
+ 
+                
+           </div>
+         </div>        
+       </div>
+     
+     </div>
+   </div>
+ </div>
 
-
-
-
-               
-          </div>
-        </div>        
-      </div>
-    
-    </div>
-  </div>
-</div>
