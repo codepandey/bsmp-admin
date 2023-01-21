@@ -4,7 +4,7 @@ import { Router } from "@angular/router";
 
 import { BSProductService } from "../../service/bs-product.service";
 import { BSProduct } from "../../model/bs-product.model";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { clone } from "lodash";
 import Swal from "sweetalert2";
 import { first } from "rxjs/operators";
@@ -48,14 +48,27 @@ export class ListProductComponent implements OnInit {
   selectedPromoCode: any;
   isSubscribableArr: any;
   selectedCategory: any;
-  isEdit: boolean = false
+  isEdit: boolean = false;
+
+  
 
   unit = [
     { id: 0, unitName: "L" },
     { id: 1, unitName: "KG" },
   ];
+  unitList = [
+    { id: 0, unitName: "L" },
+    { id: 1, unitName: "KG" },
+  ];
 
   promoCodes = [
+    { id: 0, promoName: "MY TWENTY", value: 20 },
+    { id: 1, promoName: "SMILE THIRTY", value: 30 },
+    { id: 2, promoName: "HAPPY FOURTY", value: 40 },
+    { id: 3, promoName: "EXCITING FIFTY", value: 50 },
+    { id: 4, promoName: "NONE", value: 0 },
+  ];
+  promoCode = [
     { id: 0, promoName: "MY TWENTY", value: 20 },
     { id: 1, promoName: "SMILE THIRTY", value: 30 },
     { id: 2, promoName: "HAPPY FOURTY", value: 40 },
@@ -68,10 +81,23 @@ export class ListProductComponent implements OnInit {
     { id: 1, categoryName: "Vegetables" },
     { id: 2, categoryName: "Dairy Products" },
   ];
+
+  categoryList = [
+    { id: 0, categoryName: "Sweets" },
+    { id: 1, categoryName: "Vegetables" },
+    { id: 2, categoryName: "Dairy Products" },
+  ];
   subscribable = [
     { id: 0, sub: 'Yes', state: true },
     { id: 1,  sub: 'No', state: false},
   ];
+
+  subscribableList = [
+    { id: 0, sub: 'Yes', state: true },
+    { id: 1,  sub: 'No', state: false},
+  ];
+  model1: any = {};
+
 
   constructor(
     private router: Router,
@@ -100,11 +126,58 @@ export class ListProductComponent implements OnInit {
     });
   }
 
+
+
   cancel() {
-  console.log('cancel');  
+  console.log('cancel'); 
+  this.addForm.reset(); 
   // window.location.reload();
     // this.closebuttontwo.nativeElement.click();  
   }
+
+
+  
+
+  public model = {
+    title: "",
+    unit: "",
+    stockLeft: "",
+    price: "",
+    discount: "",
+    promoCodes: "",
+    image: "",
+    category: "",
+    subscribable: "",
+    description: ""
+}
+
+public onSubmit() {
+  let product = this.addForm.value;
+
+
+  if (!this.addForm.valid) {
+    return;
+}
+
+
+this.bsProectService.addProduct(product)
+    .subscribe(async(response) => {
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Product Added",
+        showConfirmButton: true,
+        timer: 3000,
+        timerProgressBar: true,
+      });    
+      await this.getAllItems();
+    });
+    this.closebuttonAddProduct.nativeElement.click(); 
+    this.addForm.reset();
+    
+
+
+}
 
 
 
@@ -122,6 +195,8 @@ export class ListProductComponent implements OnInit {
       description: ["", Validators.required]
     });
   }
+
+
 
 
 
@@ -145,6 +220,10 @@ export class ListProductComponent implements OnInit {
     // this.initializeAddProductForm();
     if (!this.addForm.valid) {
       return;
+
+
+
+
   }
 
     

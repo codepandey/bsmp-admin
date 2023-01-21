@@ -300,7 +300,7 @@
           </div>     
         </div>      
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal"  #closebuttontwo (click)="cancel()">Close</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal"  #closebuttontwo>Close</button>
           <button type="button" class="btn btn-primary" (click)="updateProduct(editedProduct)">Update</button>
         </div>
       </div>
@@ -333,98 +333,118 @@
                <div class="container">
                <div class="row">
                  <div class="col-lg-12">
-                   <form  [formGroup]="addForm">              
+                   <form name="addForm" [formGroup]="addForm" (ngSubmit)="addForm.valid && onSubmit()">              
                      <div class="col-lg-12">
+
+
+                      <div class="form-group row">
+                        <label for="title" class="col-sm-3 col-form-label">Title</label>
+                        <div class="col-sm-9">
+                          <input
+                          class="form-control"
+                          formControlName="title" 
+                          [ngClass]="{'is-invalid':addForm.get('title').touched && addForm.get('title').invalid}" 
+                          required 
+                          
+                          />    
+                          
+                          <div class="invalid-feedback">
+                            <div>Title is required</div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
        
-                       <div class="form-group row">
-                         <label for="name" class="col-sm-3 col-form-label">Title</label>
-                         <div class="col-sm-9">
-                           <input
-                             name="title"
-                             [(ngModel)]="addProduct.title"
-                             formControlName="title"
-                             type="text"
-                             placeholder="Enter item name"
-                             class="form-control"
-                             id="title"
-                             [ngClass]="{ 'is-invalid': submitted && f.title.errors }"
-                           
-                           
-                           />    
-                           
-                           <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
-                             <div *ngIf="f.title.errors.required">Title is required</div>
-                         </div>
-                         </div>
-                       </div>
+                       
        
-                       <div class="form-group row">
+                         <div class="form-group row">
                          <label for="unit" class="col-sm-3 col-form-label"
                            >Unit
                          </label>
                          <div class="col-sm-9">
                            <select
-                             class="form-control"
-                             formControlName="unit"
-                             id="unit"
-                             [(ngModel)]="addProduct.unit"  
- 
+                           class="form-control" 
+                           name="unit" 
+                           id="unit"                             
+                           formControlName="unit" 
+                          [ngClass]="{'is-invalid':addForm.get('unit').touched && addForm.get('unit').invalid}" 
+                          required 
                            >
-                             <option *ngFor="let value of unit" [value]="value.unitName">
+                              <option value="">Please select unit</option>
+                              <option *ngFor="let value of unitList" [value]="value.unitName">
                                {{ value.unitName }}
-                             </option>
+                             </option>                        
+                             
+
+
                            </select>
+                           <div class="form-control-feedback" *ngIf="unit.errors && (unit.dirty || unit.touched)">
+                            <p *ngIf="unit.errors.required">Select an Unit</p>
+                          </div>
                           
                          </div>
                        </div>
-       
-                       <div class="form-group row">
+        
+                      <div class="form-group row">
                          <label for="name" class="col-sm-3 col-form-label">Price</label>
                          <div class="col-sm-9">
                            <input
                              name="price"
-                             [(ngModel)]="addProduct.price"
                              type="number"
-                             formControlName="price"
-                             placeholder="Enter item name"
                              class="form-control"
-                             id="price"
-                           />
-                         
+                             placeholder="Enter price"
+                             formControlName="price" 
+                          [ngClass]="{'is-invalid':addForm.get('price').touched && addForm.get('price').invalid}" 
+                          required 
+                          
+                          />    
+                          
+                          <div class="invalid-feedback">
+                            <div>Price is required</div>
+                          </div>
                          </div>
                        </div>
        
-                       <div class="form-group row">
-                         <label for="name" class="col-sm-3 col-form-label">Stock Left</label>
+                         <div class="form-group row">
+                         <label for="stockLeft" class="col-sm-3 col-form-label">Stock Left</label>
                          <div class="col-sm-9">
                            <input
-                             name="stockLeft"
-                             [(ngModel)]="addProduct.stockLeft"
+                           class="form-control"
+                             name="stockLeft"                             
                              type="number"
-                             formControlName="stockLeft"
-                             placeholder="Enter item name"
-                             class="form-control"
-                             id="stockLeft"
-                           
-                           
-                           />                     
+                             formControlName="stockLeft" 
+                             [ngClass]="{'is-invalid':addForm.get('stockLeft').touched && addForm.get('stockLeft').invalid}" 
+                             required 
+                             
+                             />    
+                             
+                             <div class="invalid-feedback">
+                               <div>stockLeft is required</div>
+                             </div>            
                          </div>
                        </div>
        
        
-                       <div class="form-group row">
+                      <div class="form-group row">
                          <label for="discount" class="col-sm-3 col-form-label">Discount Percent</label>
                          <div class="col-sm-9">
                            <input
-                             name="stockLeft"
-                             [(ngModel)]="addProduct.discount"
+                             name="discount"                             
                              type="number"
-                             formControlName="discount"
                              placeholder="Enter Discount Percent"
                              class="form-control"
-                             id="discount"                   
-                           
-                           />     
+                              formControlName="discount" 
+                             [ngClass]="{'is-invalid':addForm.get('discount').touched && addForm.get('discount').invalid}" 
+                             required 
+                             
+                             />    
+                             
+                             <div class="invalid-feedback">
+                               <div>Discount is required</div>
+                             </div>     
                                            
                          </div>
                        </div>
@@ -435,14 +455,16 @@
                          <div class="col-sm-9">
                            <input
                              name="image"
-                             [(ngModel)]="addProduct.image"
-                             formControlName="promoCodes"
-                             type="text"
-                             placeholder="Enter Image URL"
                              class="form-control"
-                             id="image"                
-                           
-                           />                     
+                             formControlName="image" 
+                             [ngClass]="{'is-invalid':addForm.get('image').touched && addForm.get('image').invalid}" 
+                             required 
+                             
+                             />    
+                             
+                             <div class="invalid-feedback">
+                               <div>Image URL is required</div>
+                             </div>                    
                          </div>
                        </div>
        
@@ -455,15 +477,24 @@
                          </label>
                          <div class="col-sm-9">
                            <select
-                             class="form-control"
-                             formControlName="promoCodes"
-                             id="promoCodes"
-                             [(ngModel)]="addProduct.promoCodes"                       
+                           class="form-control" 
+                           name="promoCodes" 
+                            id="promoCodes"                             
+                            formControlName="promoCodes" 
+                          [ngClass]="{'is-invalid':addForm.get('promoCodes').touched && addForm.get('promoCodes').invalid}" 
+                          required 
                            >
-                             <option *ngFor="let p of promoCodes" [value]="p.promoName">
-                               {{ p.promoName }}
-                             </option>
-                           </select>                   
+                              <option value="">Please select PromoCode</option>
+                              <option *ngFor="let value of promoCode" [value]="value.promoName">
+                               {{ value.promoName }}
+                             </option>                  
+                             
+
+
+                           </select>
+                           <div class="form-control-feedback" *ngIf="promoCodes.errors && (promoCodes.dirty || promoCodes.touched)">
+                            <p *ngIf="promoCodes.errors.required">promoCodes a Unit</p>
+                          </div>                 
                          </div>
                        </div>
        
@@ -473,15 +504,24 @@
                          </label>
                          <div class="col-sm-9">
                            <select
-                             class="form-control"
-                             formControlName="category"
-                             id="category"
-                             [(ngModel)]="addProduct.category"                         
+                           class="form-control" 
+                           name="category" 
+                            id="category"                             
+                            formControlName="category" 
+                          [ngClass]="{'is-invalid':addForm.get('category').touched && addForm.get('category').invalid}" 
+                          required 
                            >
-                             <option *ngFor="let c of category" [value]="c.categoryName">
-                               {{ c.categoryName }}
-                             </option>
+                              <option value="">Please select a Category </option>
+                              <option *ngFor="let value of categoryList" [value]="value.categoryName">
+                               {{ value.categoryName }}
+                             </option>                  
+                             
+
+
                            </select>
+                           <div class="form-control-feedback" *ngIf="category.errors && (category.dirty || category.touched)">
+                            <p *ngIf="category.errors.required">Select a Category</p>
+                          </div> 
                           
                          </div>
                        </div>
@@ -493,33 +533,46 @@
                          </label>
                          <div class="col-sm-9">
                            <select
-                             class="form-control"
-                             formControlName="subscribable"
-                             id="subscribable"
-                             [(ngModel)]="addProduct.subscribable"                       
+                           class="form-control" 
+                           name="subscribable" 
+                            id="subscribable"                             
+                            formControlName="subscribable" 
+                            [ngClass]="{'is-invalid':addForm.get('subscribable').touched && addForm.get('subscribable').invalid}" 
+                            required 
                            >
-                             <option *ngFor="let s of subscribable" [value]="s.state">
-                               {{ s.sub }}
-                             </option>
+                              <option value="">Please select subscribable</option>
+                              <option *ngFor="let value of subscribableList" [value]="value.state">
+                               {{ value.sub }}
+                             </option>         
+                             
+
+
                            </select>
+                           <div class="form-control-feedback" *ngIf="subscribable.errors && (subscribable.dirty || subscribable.touched)">
+                            <p *ngIf="subscribable.errors.required">Select subscribable</p>
+                          </div> 
                           
                          </div>
                        </div>
        
        
-                       <div class="form-group row">
+                      <div class="form-group row">
                          <label for="description" class="col-sm-3 col-form-label">Description</label>
                          <div class="col-sm-9">
                            <input
-                             name="description"
-                             [(ngModel)]="addProduct.description"
-                             formControlName="title"
-                             type="text"
-                             placeholder="Enter Description"
-                             class="form-control"
-                             id="description"                        
-                           
-                           />                     
+                           name="title"                             
+                           type="text"
+                           placeholder="Enter Description"
+                           class="form-control"
+                           formControlName="description" 
+                             [ngClass]="{'is-invalid':addForm.get('description').touched && addForm.get('description').invalid}" 
+                             required 
+                             
+                             />    
+                             
+                             <div class="invalid-feedback">
+                               <div>Description is required</div>
+                             </div>                   
                          </div>
                        </div>
        
@@ -529,7 +582,7 @@
                      </div>
                      <div class="modal-footer">
                        <button type="button" class="btn btn-secondary" data-dismiss="modal"  #closebuttonAddProduct>Close</button>
-                       <button type="submit" class="btn btn-primary" (click)="addNewProduct(addProduct)">Add</button>
+                       <button type="submit" class="btn btn-primary"   [disabled]="!addForm.valid" >Add</button>
                      </div>
                    </form>             
                  </div>
