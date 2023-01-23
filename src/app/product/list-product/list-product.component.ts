@@ -281,7 +281,7 @@ this.bsProectService.addProduct(product)
     
   }
 
-  updateProduct(product: any) {    
+   updateProduct(product: any) {    
     // console.log(product);
     
     let unit = product['unit']['unitName'];
@@ -294,7 +294,7 @@ this.bsProectService.addProduct(product)
     product['subscribable'] = isSubscribable;  
     
     
-    this.bsProectService.updateProduct(product).subscribe(async(data) => {
+    this.bsProectService.updateProduct(product).subscribe((data) => {
       Swal.fire({
         position: "center",
         icon: "success",
@@ -303,10 +303,10 @@ this.bsProectService.addProduct(product)
         timer: 3000,
         timerProgressBar: true,
       });
-      this.closebutton.nativeElement.click();
-     await this.getAllItems();
-    //  window.location.reload();
+      this.closebuttontwo.nativeElement.click();
+       window.location.reload();
     });
+    // await this.getAllItems();
     
   }
 
