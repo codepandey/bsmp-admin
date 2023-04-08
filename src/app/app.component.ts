@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from './service/auth.service';
 import { UserService } from './service/user.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-root',
@@ -23,35 +24,41 @@ export class AppComponent implements OnInit {
   ) {
     this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+ 
   }
 
   ngOnInit(): void {
-
-    const currentUser = localStorage.getItem('currentUser');
-
-
-    this.userService.getUserByContact(JSON.parse(currentUser).contact).subscribe(data => {
-      this.user = data;
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log('currentUser ', currentUser);
+    
+    this.displayName = currentUser['contact'];
 
 
-      if (this.user.firstName == null || this.user.firstName == ' ') {
-        this.displayName = this.user.contact;
-      } else {
-        this.displayName = this.user.firstName;
-      }
+    // this.userService.getUserByContact(JSON.parse(currentUser).contact).subscribe(data => {
+    //   this.user = data;
 
 
-      if (this.user.active) {
-        this.isUserActive = true;
+    //   if (this.user) {
+    //     // this.displayName = this.user.contact;
+    //     console.log('Nameeeeeee ', this.displayName);
+        
+    //   } 
+    //   // else {
+    //   //   this.displayName = this.user.firstName;
+    //   // }
 
-        console.log(this.user);
-        // console.log(this.isUserActive);
-      } else {
-        this.isUserActive = false;
-        //console.log(this.isUserActive);
-        console.log("Please complete Profile!");
-      }
-    });
+
+    //   if (this.user.active) {
+    //     this.isUserActive = true;
+
+    //     console.log(this.user);
+    //     // console.log(this.isUserActive);
+    //   } else {
+    //     this.isUserActive = false;
+    //     //console.log(this.isUserActive);
+    //     console.log("Please complete Profile!");
+    //   }
+    // });
     // console.log(this.currentUser);
   }
 

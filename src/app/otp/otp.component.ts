@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../service/auth.service';
 import { AlertService } from '../service/alert.service';
 import Swal from 'sweetalert2';
+import { Location } from '@angular/common';
 @Component({
   selector: 'app-otp',
   templateUrl: './otp.component.html',
@@ -22,7 +23,8 @@ export class OTPComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthenticationService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private location: Location
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
@@ -60,14 +62,18 @@ export class OTPComponent implements OnInit {
       return;
     }
     const contact = localStorage.getItem('userContact');
+    console.log('contact ', contact);
+    
     this.otpForm.controls.contact.setValue(contact);
     console.log("inside validate otp");
    // if (this.route.snapshot.queryParamMap.get('registered') == 'true') {
+      console.log('form value ', this.otpForm.value);
       
       this.authenticationService.validateOTP(this.otpForm.value)
         .pipe(first())
         .subscribe(
           data => {
+            console.log(data);
             
             Swal.fire({
               icon: 'success',
@@ -98,37 +104,17 @@ export class OTPComponent implements OnInit {
             this.error = error;
           });
 
-  //  } else {
-
-      // Swal.fire({
-      //   icon: 'success',
-      //   width: 600,
-      //   padding: '3em',
-      //   title: 'Your are Logged in!',
-      //   text: 'Welcome to BrahmaShakti!',
-      //   timer: 5000,
-      //   timerProgressBar: true,
-      //   footer: `<strong style="color:purple;">Please Login again and complete your Profile!</strong>`,
-      //   backdrop: `
-      //     rgba(0,0,123,0.4)
-      //     left top
-      //     no-repeat
-      //   `
-      // });
-      // this.router.navigate(['profile/my-profile']);
-
-     
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          width: 500,
-          padding: '1em',
-          text: `You entered a wrong OTP!`,
-          footer: `<strong style="color:red;">Please try with a Valid OTP!</strong>`
-        });
+  
        
   
 
-   // }
+   
   }
+
+
+  goBack() {
+    this.location.back();
+  }
+
+
 }

@@ -37,8 +37,9 @@ const routes: Routes = [
 
 
   {
-    path: 'order-detail',
-    component: OrderDetailComponent, canActivate: [AuthGuard]
+    path: 'list-order',
+    component: OrderDetailComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'reset-password',

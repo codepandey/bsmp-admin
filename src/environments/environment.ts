@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  BS_API_URL: 'http://localhost:8090/brahmashakti/',
+  BS_API_URL: "http://ec2-15-206-209-235.ap-south-1.compute.amazonaws.com:8080/",
   apiUrl: 'http://localhost:9092/neerseva/api',
   USERS_API_URL: 'http://localhost:9092/neerseva/api/v1/users/',
   BRANDS_API_URL: 'http://localhost:9091/neerseva/api/v1/products/brands/',

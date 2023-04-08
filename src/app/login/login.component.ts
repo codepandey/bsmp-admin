@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { AuthenticationService } from '../service/auth.service';
 import Swal from 'sweetalert2';
 import { UserService } from '../service/user.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-login',
@@ -57,6 +58,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+   console.log('submitted');
    
         this.submitted = true;        
         this.authenticationService

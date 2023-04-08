@@ -5,15 +5,22 @@ import { map } from 'rxjs/operators';
 
 import { User } from '../model/user.model';
 import { environment } from 'src/environments/environment';
+import { v4 as uuid } from "uuid";
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
+  uuid: any;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    ) {
     this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
+    this.uuid = this.createConvID();
+    
+    
   }
 
   private baseUrl = environment.BS_API_URL;
@@ -24,8 +31,7 @@ export class AuthenticationService {
 
 
   validateOTP(user: User) {
-
-    return this.http.post<any>(this.baseUrl+'validate-otp', user)
+    return this.http.post<any>(this.baseUrl+"brahmashakti/validate-otp" + "?convId=" + this.uuid , user)
       .pipe(map(user => {
         // login successful if there's a jwt token in the response
         // if (user && user.token) {
@@ -45,7 +51,7 @@ export class AuthenticationService {
 
 
   verifyLogin(user: User) {
-    return this.http.post<any>(this.baseUrl, user)
+    return this.http.post<any>(this.baseUrl + 'brahmashakti/login', user)
       .pipe(map(user => {
        // console.log(user);
         if (user) {
@@ -91,6 +97,11 @@ export class AuthenticationService {
 
   register(user: User) {
    // return this.http.post(this.users_api_Url, user);
+  }
+
+
+  createConvID() {
+    return  uuid();
   }
 
 

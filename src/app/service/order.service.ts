@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConstants } from '../commom/app.constants';
+import { OrderDetails } from '../order-detail/order-detail.component';
 // import { AppConstants } from '../common/app.constants';
  
 const httpOptions = {
@@ -13,7 +14,8 @@ declare var Razorpay: any;
 providedIn: 'root'
 })
 export class OrderService {
- 
+    URL = "https://my.api.mockaroo.com/order_data.json?key=b33418f0";
+    public allOrders: OrderDetails;
     constructor(private http: HttpClient) {
  
     }
@@ -34,4 +36,18 @@ export class OrderService {
         razorpaySignature: order.razorpay_signature
         }, httpOptions);
     }
+
+
+
+
+
+    getAllOrders() {
+        return this.http.get(this.URL).toPromise();
+    }
+
+
+
+
+
+
 }

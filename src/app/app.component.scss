@@ -18,3 +18,55 @@ h6{
 .toggle-menu i{
     color:white !important;
 }
+
+
+
+
+/*  media start */
+
+
+@media screen and(max-width:920px) {
+    #sidebar-wrapper {
+        opacity: 0.7;
+    }
+}
+
+
+@media screen and(max-width:420px) {
+    #head {
+        width: auto;
+        margin-left: -40px;
+        padding-left: -15px;
+    }
+
+    #wrapper {
+        width: fit-content;
+    }
+
+    #sidebar-wrapper {
+        width:fit-content;
+    }
+
+
+  
+    #sidebar-wrapper-list{
+        width: auto;
+    }
+}
+
+
+
+@media screen and(min-width:430px)and(max-width:550px) {
+    #wrapper {
+        width: fit-content;
+    }
+
+}
+
+@media screen and(min-width:551px)and(max-width:920px) {
+    #wrapper {
+        width: fit-content;
+    }
+
+} 
+   /* media end */
