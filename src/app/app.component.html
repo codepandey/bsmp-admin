@@ -12,7 +12,7 @@
       </li>
     </ul>
     <div *ngIf="currentUser">
-      <h6 class="mt-2 user-title">Hi {{ displayName }}</h6>
+      <h6 class="mt-2 user-title">Hello - {{ displayName }}</h6>
     </div>
     <ul class="navbar-nav align-items-center right-nav-link">
       <li class="nav-item dropdown-lg">
@@ -122,7 +122,7 @@
       <li routerLinkActive="active current">
         <a routerLink="home"><i class="zmdi zmdi-home text-info"></i> Home</a>
       </li>
-      <li routerLinkActive="active current">
+      <!-- <li routerLinkActive="active current" id="sidebar-wrapper-list">
         <a href="" class="waves-effect">
           <i class="zmdi zmdi-account text-info"></i>
           <span> User</span>
@@ -136,7 +136,7 @@
             <a routerLink="user/list-user"><i class="zmdi zmdi-accounts-list-alt text-info"></i> List User</a>
           </li>
         </ul>
-      </li>
+      </li> -->
       <li routerLinkActive="active current">
         <a href="" class="waves-effect">
           <i class="zmdi zmdi-account text-info"></i>
@@ -144,14 +144,39 @@
           <i class="fa fa-angle-left float-right"></i>
         </a>
         <ul class="sidebar-submenu">
-          <li routerLinkActive="active current">
+          <!-- <li routerLinkActive="active current">
             <a routerLink="product/add-product"><i class="zmdi zmdi-account-add text-info"></i> Add Product</a>
-          </li>
+          </li> -->
           <li routerLinkActive="active current">
             <a routerLink="product/list-product"><i class="zmdi zmdi-accounts-list-alt text-info"></i> List Product</a>
           </li>
         </ul>
       </li>
+
+      <li routerLinkActive="active current">
+        <a href="" class="waves-effect">
+          <i class="zmdi zmdi-account text-info"></i>
+          <span> Order</span>
+          <i class="fa fa-angle-left float-right"></i>
+        </a>
+        <ul class="sidebar-submenu">
+          <li routerLinkActive="active current">
+            <a routerLink="list-order"><i class="zmdi zmdi-account-add text-info"></i>List Orders</a>
+          </li>
+          
+        </ul>
+      </li>
+
+
+
+
+
+
+
+
+
+
+
     </ul>
   </div>
 </div>

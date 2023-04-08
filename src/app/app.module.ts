@@ -49,9 +49,44 @@ import { ListProductComponent } from './product/list-product/list-product.compon
 import { BSProductService } from './service/bs-product.service';
 import { OrderComponent } from './order/order.component';
 import { OrderService } from './service/order.service';
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 // import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 
+
+import {
+  MatAutocompleteModule,
+  MatButtonModule,
+  MatButtonToggleModule,
+  MatCardModule,
+  MatCheckboxModule,
+  MatChipsModule,
+  MatDatepickerModule,
+  MatDialogModule,
+  MatExpansionModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatMenuModule,
+  MatNativeDateModule,
+  MatPaginatorModule,
+  MatProgressBarModule,
+  MatProgressSpinnerModule,
+  
+  MatRippleModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSliderModule,
+  
+  MatSnackBarModule,
+  MatSortModule,
+  MatTableModule,
+  MatTabsModule,
+  MatToolbarModule,
+  MatTooltipModule,
+  MatStepperModule,
+} from '@angular/material';
+import { CdkTableModule } from '@angular/cdk/table';
 
 
 @NgModule({
@@ -90,8 +125,42 @@ import { OrderService } from './service/order.service';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    
+    CdkTableModule,
+    MatAutocompleteModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatChipsModule,
+    MatStepperModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatNativeDateModule,
+    MatPaginatorModule,
+    MatProgressBarModule,
+    MatProgressSpinnerModule,
+    
+    MatRippleModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    
+    MatSnackBarModule,
+    MatSortModule,
+    MatTableModule,
+    MatTabsModule,
+    MatToolbarModule,
+    MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
     ConfirmationPopoverModule.forRoot({
@@ -116,7 +185,7 @@ import { OrderService } from './service/order.service';
     ItemService,
     BrandService,
     BSProductService,
-    OrderService
+    OrderService,
 
 
 

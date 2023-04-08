@@ -1,0 +1,96 @@
+
+
+
+
+@media screen and (max-width:920px) {
+
+    #container{
+        margin: 0;
+    }
+    
+    }
+    
+    
+    @media screen and (max-width:420px) {
+    
+    
+        #head{width: fit-content;
+              height: 150px;
+            margin-bottom: 10px;
+            }
+    
+          #search{
+            margin-left: -15px;
+            margin-top: 10px;
+            
+          }    
+    
+    
+          #item{
+             width: fit-content;
+    
+          }
+    
+          #exampleModalCenter{
+            
+           
+             margin: 150px 20px ;
+          }
+    
+    
+          #add-product{
+            
+             margin: 200px 30px ;
+            
+    
+          }
+     
+        
+        }
+    
+    @media screen and(min-width:421px)and (max-width:545px) {
+    
+    
+    
+    
+        #head{width: fit-content;
+              height: 140px;
+            margin-bottom: 10px;
+            }
+    
+          #search{
+          
+          width:270px
+           
+            
+          }    
+    
+    
+          #item{
+             width: fit-content;
+    
+          }
+    
+          #exampleModalCenter{
+            
+             width: auto;
+              height: 500px;
+              margin: 150px 20px ;
+           }
+    
+           #add-product{
+          
+             margin: 200px 30px ;
+          }
+     
+        
+        }
+        
+    
+    
+    
+    
+    
+    
+    
+    

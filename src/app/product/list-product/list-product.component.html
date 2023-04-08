@@ -1,6 +1,6 @@
-<div class="content-wrapper">
+<div class="content-wrapper" id="container">
     <div class="container-fluid">
-      <div class="card-header">
+      <div class="card-header" id="head">
         <h5 class="form-header">
           <i class="zmdi zmdi-format-list-numbered"></i>
           Product List
@@ -14,7 +14,7 @@
           <a href=""></a>
         </form>
       </div>
-      <div class="row">
+      <div class="row" id="item">
         <div class="col-lg-4 pt50 pb50 col-md-4 my-2" *ngFor="let product of products; let i = index">
           <div class="row wow fadeIn" data-wow-delay=".3s">
             <div class="col-md-12">
@@ -34,7 +34,7 @@
                     </div>
   
                     
-                    <div class="col-md-6">
+                    <div class="col-md-6" id="icon">
                       <a data-toggle="modal" data-target="#exampleModalCenter"  style="margin-right: 10px; color: white;"
                         class="btn btn-sm btn-primary" (click)="viewProduct(product)"><i class="zmdi zmdi-edit" data-toggle="tooltip"
                           data-placement="top" title="Edit"></i></a>
