@@ -33,7 +33,7 @@ import { OrderComponent } from './order/order.component';
 const routes: Routes = [
 
 
-  { path: 'order', component: OrderComponent },
+  { path: 'order', component: OrderComponent, canActivate: [AuthGuard] },
 
 
   {
@@ -77,9 +77,9 @@ const routes: Routes = [
   {
     path: 'product',
     children: [
-      {path: 'add-product', component: AddProductComponent},
-      {path: 'edit-product', component: EditProductComponent},
-      {path: 'list-product', component: ListProductComponent},
+      {path: 'add-product', component: AddProductComponent, canActivate: [AuthGuard]},
+      {path: 'edit-product', component: EditProductComponent, canActivate: [AuthGuard]},
+      {path: 'list-product', component: ListProductComponent, canActivate: [AuthGuard]},
     ]
   },
 

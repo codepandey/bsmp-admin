@@ -98,7 +98,7 @@
           </li>
           <li class="dropdown-divider"></li>
           <li class="dropdown-item">
-            <a (click)="logout()"><i class="icon-power mr-2"></i> Logout</a>
+            <a (click)="logout()" style="cursor: pointer;"><i class="icon-power mr-2"></i> Logout</a>
           </li>
         </ul>
       </li>
@@ -109,9 +109,9 @@
 <div id="wrapper" *ngIf="currentUser">
   <!--Start sidebar-wrapper-->
   <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
-    <div class="brand-logo" style="margin-bottom:50%">
+    <div class="brand-logo">
       <a routerLink="home">
-        <img src="assets/images/BSADMIN.jpg" class="logo-icon" alt="logo icon" />
+        <img src="assets/images/bsmp-logo.png" class="logo-icon" alt="logo icon" />
         <!-- <h5 class="logo-text">Rukada Admin</h5> -->
       </a>
     </div>
